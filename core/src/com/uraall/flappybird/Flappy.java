@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 
+import java.util.Random;
+
 public class Flappy extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture background;
@@ -17,6 +19,9 @@ public class Flappy extends ApplicationAdapter {
 	Texture topTube;
 	Texture bottomTube;
 	int spaceBetweenTune = 500;
+	float tubeShift;
+	Random random;
+
 
 
 
@@ -33,7 +38,7 @@ public class Flappy extends ApplicationAdapter {
 		flyHeight = Gdx.graphics.getHeight() / 2 - bird[0].getHeight() / 2;
 		topTube = new Texture("top_tube.png");
 		bottomTube = new Texture("bottom_tube.png");
-
+		random = new Random();
 	}
 
 	@Override
@@ -49,12 +54,12 @@ public class Flappy extends ApplicationAdapter {
 		}
 		if (gameStateFlag == 1) {
 
-			batch.draw(topTube, Gdx.graphics.getWidth() / 2 - topTube.getWidth() / 2, Gdx.graphics.getHeight() / 2 + spaceBetweenTune / 2);
-			batch.draw(bottomTube, Gdx.graphics.getWidth() / 2 - bottomTube.getWidth() / 2, Gdx.graphics.getHeight() / 2 - spaceBetweenTune / 2 - bottomTube.getHeight());
+
 
 			if (Gdx.input.justTouched()) {
 
 fallSpeed = -30;
+tubeShift = (random.nextFloat() - 0.5f) * (Gdx.graphics.getHeight() - spaceBetweenTune - 200);
 			}
 if (flyHeight > 0 || fallSpeed < 0){
 			fallSpeed++;
@@ -67,6 +72,9 @@ if (flyHeight > 0 || fallSpeed < 0){
 			}
 
 		}
+
+		batch.draw(topTube, Gdx.graphics.getWidth() / 2 - topTube.getWidth() / 2, Gdx.graphics.getHeight() / 2 + spaceBetweenTune / 2 + tubeShift);
+		batch.draw(bottomTube, Gdx.graphics.getWidth() / 2 - bottomTube.getWidth() / 2, Gdx.graphics.getHeight() / 2 - spaceBetweenTune / 2 - bottomTube.getHeight() + tubeShift);
 
 		if (birdStateFlag == 0) {
 			birdStateFlag = 1;
