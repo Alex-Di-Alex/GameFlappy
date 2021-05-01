@@ -9,7 +9,6 @@ import com.badlogic.gdx.utils.ScreenUtils;
 public class Flappy extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture background;
-	//Texture bird_wings_up;
 	Texture[] bird;
 	int birdStateFlag = 0;
 	float flyHeight;
