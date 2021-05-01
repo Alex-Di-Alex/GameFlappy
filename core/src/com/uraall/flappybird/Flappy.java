@@ -4,6 +4,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
@@ -34,6 +35,9 @@ public class Flappy extends ApplicationAdapter {
 	Rectangle[] topTubeRectangles;
 	Rectangle[] bottomTubeRectangles;
 	//ShapeRenderer shapeRenderer;
+	int gameScore = 0;
+	int passedTubeIndex = 0;
+	BitmapFont scoreFont;
 
 
 
@@ -58,12 +62,15 @@ public class Flappy extends ApplicationAdapter {
 		topTube = new Texture("top_tube.png");
 		bottomTube = new Texture("bottom_tube.png");
 		random = new Random();
+		scoreFont = new BitmapFont();
+		scoreFont.setColor(Color.CYAN);
+		scoreFont.getData().setScale(10);
 
 		distanceBetweenTubes = Gdx.graphics.getWidth() / 2;
 		for (int i = 0; i < tubesNumber; i++){
 
 			tubeX[i] = Gdx.graphics.getWidth() / 2 - topTube.getWidth() / 2 + i * distanceBetweenTubes;
-			tubeShift[i] = (random.nextFloat() - 0.5f) * (Gdx.graphics.getHeight() - spaceBetweenTune - 390);
+			tubeShift[i] = (random.nextFloat() - 0.5f) * (Gdx.graphics.getHeight() - spaceBetweenTune - 500);
 			topTubeRectangles[i] = new Rectangle();
 			bottomTubeRectangles[i] = new Rectangle();
 
@@ -85,7 +92,20 @@ public class Flappy extends ApplicationAdapter {
 		}
 		if (gameStateFlag == 1) {
 
+			Gdx.app.log("Game score", String.valueOf(gameScore));
 
+if(tubeX[passedTubeIndex] < Gdx.graphics.getWidth() / 2){
+
+	gameScore++;
+	if(passedTubeIndex < tubesNumber - 1){
+		passedTubeIndex++;
+
+	}else {
+		passedTubeIndex = 0;
+
+	}
+
+}
 
 			if (Gdx.input.justTouched()) {
 
@@ -134,7 +154,9 @@ if (flyHeight > 0 || fallSpeed < 0){
 
 
 		batch.draw(bird[birdStateFlag], Gdx.graphics.getWidth() / 2 - bird[birdStateFlag].getWidth() / 2, flyHeight);
+		scoreFont.draw(batch, String.valueOf(gameScore), 100,200);
 		batch.end();
+
 		birdCircle.set(Gdx.graphics.getWidth() / 2, flyHeight + bird[birdStateFlag].getHeight() / 2, bird[birdStateFlag].getWidth() / 2);
 		//shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 		//shapeRenderer.setColor(Color.CYAN);
